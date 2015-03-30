@@ -23,7 +23,7 @@ Compile and Install
 
   Example for debian.
   ```
-  apt-get install -y subversion make gcc g++ libncurses5-dev libghc-zlib-dev libreadline-dev libssl-dev gawk bzip2 patch xz-utils sudo
+  apt-get install -y subversion make gcc g++ libncurses5-dev libghc-zlib-dev libreadline-dev libssl-dev gawk bzip2 patch xz-utils sudo git
   ```
 
 2. Get OpenWrt SDK and prepare for compile
