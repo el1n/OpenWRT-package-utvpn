@@ -8,27 +8,27 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=softethervpn
-PKG_VERSION:=4.15
-PKG_RELEASE:=9546
-#PKG_VERSION2:=rtm
-PKG_VERSION2:=beta
-PKG_DATE:=2015.04.05
+PKG_VERSION:=4.18
+PKG_RELEASE:=9570
+PKG_VERSION2:=rtm
+#PKG_VERSION2:=beta
+PKG_DATE:=2015.07.26
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/v$(PKG_VERSION)-$(PKG_RELEASE)
 PKG_SOURCE:=softether-src-v$(PKG_VERSION)-$(PKG_RELEASE)-$(PKG_VERSION2).tar.gz
 PKG_SOURCE_URL:=http://jp.softether-download.com/files/softether/v$(PKG_VERSION)-$(PKG_RELEASE)-$(PKG_VERSION2)-$(PKG_DATE)-tree/Source_Code/
-PKG_MD5SUM:=317a20a74f9bd06618c0bacc368edd42
+PKG_MD5SUM:=d705bc10f1cfadda8204f54acc69d05e
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 
 define Package/softethervpn
-  SECTION:=net
-  CATEGORY:=Network
-  SUBMENU:=VPN
-  TITLE:=Open-Source Free Cross-platform Multi-protocol VPN
-  URL:=http://www.softether.org/
-  DEPENDS:=+libpthread +librt +libreadline +libopenssl +libncurses +kmod-tun
+	SECTION:=net
+	CATEGORY:=Network
+	SUBMENU:=VPN
+	TITLE:=Open-Source Free Cross-platform Multi-protocol VPN
+	URL:=http://www.softether.org/
+	DEPENDS:=+libpthread +librt +libreadline +libopenssl +libncurses +kmod-tun
 endef
 
 #define Package/softethervpnclient
@@ -42,6 +42,13 @@ endef
 #define Package/softethervpncmd
 #	$(call Package/softethervpnserver)
 #endef
+
+ifeq ($(ARCH),mips)
+	SE4WRT_OPTIONS := -minterlink-mips16
+endif
+ifeq ($(ARCH),mipsel)
+	SE4WRT_OPTIONS := -minterlink-mips16
+endif
 
 define Build/Configure
 endef
@@ -68,7 +75,7 @@ define Build/Compile
 
 	$(MAKE) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CCFLAGS="-I$(STAGING_DIR)/usr/include $(ICONV_CFLAGS) -minterlink-mips16" \
+		CCFLAGS="-I$(STAGING_DIR)/usr/include $(ICONV_CFLAGS) $(SE4WRT_OPTIONS)" \
 		LDFLAGS="-L$(STAGING_DIR)/usr/lib $(ICONV_LDFLAGS) -liconv" \
 		-C $(PKG_BUILD_DIR) \
 		-f src/makefiles/linux_32bit.mak
